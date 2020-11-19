@@ -45,9 +45,7 @@ function addRandomBombs(
   configGame._maxColunm = maxColumn;
   configGame._numberOfBomb = bombs;
 
-  console.log('entra aca', configGame.getConfig.hasBombs);
-
-  if (configGame.getConfig.hasBombs === true) {
+  if (configGame.getConfig.hasBombs) {
     return cells;
   }
 

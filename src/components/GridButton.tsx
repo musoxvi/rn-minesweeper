@@ -10,12 +10,14 @@ interface ButtonProps {
   hasLost: boolean;
   value: CellValue;
   state: CellState;
+  onFlag: (rowParam: number, colParam: number) => void;
   cellPress: (rowParam: number, colParam: number) => void;
 }
 
 const GridButton: React.FC<ButtonProps> = ({
   col,
   cellPress,
+  onFlag,
   hasLost,
   maxRow,
   row,
@@ -54,7 +56,10 @@ const GridButton: React.FC<ButtonProps> = ({
     return null;
   };
   return (
-    <TouchableOpacity disabled={hasLost} onPress={() => cellPress(row, col)}>
+    <TouchableOpacity
+      disabled={hasLost}
+      onLongPress={() => onFlag(row, col)}
+      onPress={() => cellPress(row, col)}>
       <View
         style={
           state === CellState.visible
