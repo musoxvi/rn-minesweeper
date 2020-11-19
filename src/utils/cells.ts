@@ -116,40 +116,16 @@ export const generateCells = (
         return false;
       }
 
-      // if (
-      //   allAdjacentCells.topLeftCell?.value === CellValue.bomb ||
-      //   allAdjacentCells.topCell?.value === CellValue.bomb ||
-      //   allAdjacentCells.topRightCell?.value === CellValue.bomb ||
-      //   allAdjacentCells.leftCell?.value === CellValue.bomb ||
-      //   allAdjacentCells.rightCell?.value === CellValue.bomb ||
-      //   allAdjacentCells.bottomLeftCell?.value === CellValue.bomb ||
-      //   allAdjacentCells.bottomCell?.value === CellValue.bomb ||
-      //   allAdjacentCells.bottomRightCell?.value === CellValue.bomb
-      // ) {
-      //   numberOfBombs++;
-      // }
-      if (allAdjacentCells.topLeftCell?.value === CellValue.bomb) {
-        numberOfBombs++;
-      }
-      if (allAdjacentCells.topCell?.value === CellValue.bomb) {
-        numberOfBombs++;
-      }
-      if (allAdjacentCells.topRightCell?.value === CellValue.bomb) {
-        numberOfBombs++;
-      }
-      if (allAdjacentCells.leftCell?.value === CellValue.bomb) {
-        numberOfBombs++;
-      }
-      if (allAdjacentCells.rightCell?.value === CellValue.bomb) {
-        numberOfBombs++;
-      }
-      if (allAdjacentCells.bottomLeftCell?.value === CellValue.bomb) {
-        numberOfBombs++;
-      }
-      if (allAdjacentCells.bottomCell?.value === CellValue.bomb) {
-        numberOfBombs++;
-      }
-      if (allAdjacentCells.bottomRightCell?.value === CellValue.bomb) {
+      if (
+        allAdjacentCells.topLeftCell?.value === CellValue.bomb ||
+        allAdjacentCells.topCell?.value === CellValue.bomb ||
+        allAdjacentCells.topRightCell?.value === CellValue.bomb ||
+        allAdjacentCells.leftCell?.value === CellValue.bomb ||
+        allAdjacentCells.rightCell?.value === CellValue.bomb ||
+        allAdjacentCells.bottomLeftCell?.value === CellValue.bomb ||
+        allAdjacentCells.bottomCell?.value === CellValue.bomb ||
+        allAdjacentCells.bottomRightCell?.value === CellValue.bomb
+      ) {
         numberOfBombs++;
       }
 

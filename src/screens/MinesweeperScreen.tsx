@@ -94,8 +94,7 @@ const MinesweeperScreen: React.FC<Props> = ({config}) => {
 
       if (currentCell.value === CellValue.bomb) {
         setHasLost(true);
-        setCells(showAllBombs());
-        return;
+        return setCells(showAllBombs());
       } else if (currentCell.value === CellValue.none) {
         newCells = openMultipleCells(newCells, rowParam, colParam);
       } else {
@@ -171,8 +170,12 @@ const MinesweeperScreen: React.FC<Props> = ({config}) => {
             maxRow={config.maxRow}
             col={colIndex}
             key={`${rowIndex}-${colIndex}`}
-            onFlag={(r, c) => handleFlag(r, c)}
-            cellPress={(r, c) => handleCellPress(r, c)}
+            onFlag={(currentRow, currentCol) =>
+              handleFlag(currentRow, currentCol)
+            }
+            cellPress={(currentRow, currentCol) =>
+              handleCellPress(currentRow, currentCol)
+            }
             row={rowIndex}
             state={cell.state}
             hasLost={hasLost}
