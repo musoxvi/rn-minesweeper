@@ -12,11 +12,6 @@ import {Borders, Center, Colors} from '../utils/styles';
 
 type Props = {config: ConfigType};
 const MinesweeperScreen: React.FC<Props> = ({config}) => {
-  // const [config, setConfig] = useState<ConfigType>({
-  //   maxRow: 8,
-  //   maxColunm: 8,
-  //   numberOfBomb: 2,
-  // });
   const [cells, setCells] = useState(
     generateCells(config.maxRow, config.maxColunm, config.numberOfBomb),
   );
@@ -176,6 +171,7 @@ const MinesweeperScreen: React.FC<Props> = ({config}) => {
             maxRow={config.maxRow}
             col={colIndex}
             key={`${rowIndex}-${colIndex}`}
+            onFlag={(r, c) => handleFlag(r, c)}
             cellPress={(r, c) => handleCellPress(r, c)}
             row={rowIndex}
             state={cell.state}
