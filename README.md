@@ -3,7 +3,7 @@
 Minesweeper made using React Native and Typescript! 😎
 
 <img src="./src/img/minesweeper-home.png" alt="minesweeper" style="margin-left: 15px;" />
-<img src="./src/img/minesweeper-start" alt="minesweeper" style="margin-left: 15px;" />
+<img src="./src/img/minesweeper-start.png" alt="minesweeper" style="margin-left: 15px;" />
 <img src="./src/img/minesweeper-lose.png" alt="minesweeper" style="margin-left: 15px;" />
 <img src="./src/img/minesweeper-win.png" alt="minesweeper" style="margin-left: 15px;" />
 
@@ -11,7 +11,7 @@ Minesweeper made using React Native and Typescript! 😎
 
 ```bash
 # Clone this repository
-# $ git clone https://github.com/musoxvi/rn-minesweeper.git rn-minesweeper
+$ git clone https://github.com/musoxvi/rn-minesweeper.git rn-minesweeper
 
 # Go into the repository
 $ cd minesweeper
