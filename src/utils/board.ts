@@ -6,7 +6,7 @@ class ConfigGame {
   public _maxColunm: number = 4;
   public _numberOfBomb: number = 2;
   public _hasBombs: boolean = false;
-  public _cells: Cell[][] | null = null;
+  public _board: Cell[][] | null = null;
 
   public get getConfig() {
     return {
@@ -14,16 +14,16 @@ class ConfigGame {
       maxColumn: this._maxColunm,
       bombs: this._numberOfBomb,
       hasBombs: this._hasBombs,
-      cells: this._cells,
+      board: this._board,
     };
   }
 }
 
 let configGame = new ConfigGame();
 
-export const resetCells = () => {
+export const resetBoard = () => {
   configGame._hasBombs = false;
-  configGame._cells = null;
+  configGame._board = null;
   configGame._maxRow = 0;
   configGame._maxColunm = 0;
 };
@@ -33,30 +33,30 @@ export const resetCells = () => {
  * @param bombs
  * @param maxRow
  * @param maxColumn
- * @param cells
+ * @param board
  */
-function addRandomBombs(
+const addRandomBombs = (
   bombs: number,
   maxRow: number,
   maxColumn: number,
-  cells: Cell[][],
-) {
+  board: Cell[][],
+) => {
   configGame._maxRow = maxRow;
   configGame._maxColunm = maxColumn;
   configGame._numberOfBomb = bombs;
 
   if (configGame.getConfig.hasBombs) {
-    return cells;
+    return board;
   }
 
   let bombsPlaced = 0;
   while (bombsPlaced < bombs) {
     const randomRow = Math.floor(Math.random() * maxRow);
     const randomCol = Math.floor(Math.random() * maxColumn);
-    const currentCell = cells[randomRow][randomCol];
+    const currentCell = board[randomRow][randomCol];
 
     if (currentCell.value !== CellValue.bomb) {
-      cells = cells.map((row, rowIndex) =>
+      board = board.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
           if (randomRow === rowIndex && randomCol === colIndex) {
             return {
@@ -72,22 +72,22 @@ function addRandomBombs(
     }
   }
   configGame._hasBombs = true;
-  return cells;
-}
+  return board;
+};
 
 /**
- * generateCells - this function generates a 2d grid for our board based on
+ * generateBoard - this function generates a 2d grid for our board based on
  * the number of columns and rows
  * @param {number} maxRow
  * @param {number} maxColumn
  * @param {number} bombs
  */
-export const generateCells = (
+export const generateBoard = (
   maxRow: number,
   maxColumn: number,
   bombs: number,
 ): Cell[][] => {
-  let cells: Cell[][] = !configGame.getConfig.cells
+  let board: Cell[][] = !configGame.getConfig.board
     ? Array.apply(null, Array(maxRow)).map(() => {
         return Array.apply(null, Array(maxColumn)).map(() => {
           return {
@@ -96,16 +96,16 @@ export const generateCells = (
           };
         });
       })
-    : configGame.getConfig.cells;
+    : configGame.getConfig.board;
 
-  cells = addRandomBombs(bombs, maxRow, maxColumn, cells);
+  board = addRandomBombs(bombs, maxRow, maxColumn, board);
 
-  cells.forEach((row, rowIndex) => {
+  board.forEach((row, rowIndex) => {
     let numberOfBombs = 0;
     row.forEach((col, colIndex) => {
-      const currentCell = cells[rowIndex][colIndex];
+      const currentCell = board[rowIndex][colIndex];
       const allAdjacentCells = grabAllAdjacentCells(
-        cells,
+        board,
         rowIndex,
         colIndex,
         maxRow,
@@ -130,16 +130,16 @@ export const generateCells = (
       }
 
       if (numberOfBombs > 0) {
-        cells[rowIndex][colIndex] = {
+        board[rowIndex][colIndex] = {
           ...currentCell,
           value: numberOfBombs,
         };
       }
     });
   });
-  configGame._cells = cells;
+  configGame._board = board;
 
-  return cells;
+  return board;
 };
 
 /**
@@ -150,13 +150,13 @@ export const generateCells = (
  * @returns {Cell[][]}
  */
 export const openMultipleCells = (
-  cells: Cell[][],
+  board: Cell[][],
   rowParam: number,
   colParam: number,
 ): Cell[][] => {
-  const currentCell = cells[rowParam][colParam];
+  const currentCell = board[rowParam][colParam];
   const allAdjacentCells = grabAllAdjacentCells(
-    cells,
+    board,
     rowParam,
     colParam,
     configGame.getConfig.maxRow,
@@ -167,20 +167,20 @@ export const openMultipleCells = (
     currentCell.state === CellState.visible ||
     currentCell.state === CellState.flagged
   ) {
-    return cells;
+    return board;
   }
 
-  let newCells = cells.slice();
-  newCells[rowParam][colParam].state = CellState.visible;
+  let newBoard = board.slice();
+  newBoard[rowParam][colParam].state = CellState.visible;
 
   if (
     allAdjacentCells.topLeftCell?.state === CellState.notTouched &&
     allAdjacentCells.topLeftCell?.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.topLeftCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam - 1, colParam - 1);
+      newBoard = openMultipleCells(newBoard, rowParam - 1, colParam - 1);
     } else {
-      newCells[rowParam - 1][colParam - 1].state = CellState.visible;
+      newBoard[rowParam - 1][colParam - 1].state = CellState.visible;
     }
   }
 
@@ -189,9 +189,9 @@ export const openMultipleCells = (
     allAdjacentCells.topCell.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.topCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam - 1, colParam);
+      newBoard = openMultipleCells(newBoard, rowParam - 1, colParam);
     } else {
-      newCells[rowParam - 1][colParam].state = CellState.visible;
+      newBoard[rowParam - 1][colParam].state = CellState.visible;
     }
   }
 
@@ -200,9 +200,9 @@ export const openMultipleCells = (
     allAdjacentCells.topRightCell.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.topRightCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam - 1, colParam + 1);
+      newBoard = openMultipleCells(newBoard, rowParam - 1, colParam + 1);
     } else {
-      newCells[rowParam - 1][colParam + 1].state = CellState.visible;
+      newBoard[rowParam - 1][colParam + 1].state = CellState.visible;
     }
   }
 
@@ -211,9 +211,9 @@ export const openMultipleCells = (
     allAdjacentCells.leftCell.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.leftCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam, colParam - 1);
+      newBoard = openMultipleCells(newBoard, rowParam, colParam - 1);
     } else {
-      newCells[rowParam][colParam - 1].state = CellState.visible;
+      newBoard[rowParam][colParam - 1].state = CellState.visible;
     }
   }
 
@@ -222,9 +222,9 @@ export const openMultipleCells = (
     allAdjacentCells.rightCell.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.rightCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam, colParam + 1);
+      newBoard = openMultipleCells(newBoard, rowParam, colParam + 1);
     } else {
-      newCells[rowParam][colParam + 1].state = CellState.visible;
+      newBoard[rowParam][colParam + 1].state = CellState.visible;
     }
   }
 
@@ -233,9 +233,9 @@ export const openMultipleCells = (
     allAdjacentCells.bottomLeftCell.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.bottomLeftCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam + 1, colParam - 1);
+      newBoard = openMultipleCells(newBoard, rowParam + 1, colParam - 1);
     } else {
-      newCells[rowParam + 1][colParam - 1].state = CellState.visible;
+      newBoard[rowParam + 1][colParam - 1].state = CellState.visible;
     }
   }
 
@@ -244,9 +244,9 @@ export const openMultipleCells = (
     allAdjacentCells.bottomCell.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.bottomCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam + 1, colParam);
+      newBoard = openMultipleCells(newBoard, rowParam + 1, colParam);
     } else {
-      newCells[rowParam + 1][colParam].state = CellState.visible;
+      newBoard[rowParam + 1][colParam].state = CellState.visible;
     }
   }
 
@@ -255,11 +255,11 @@ export const openMultipleCells = (
     allAdjacentCells.bottomRightCell.value !== CellValue.bomb
   ) {
     if (allAdjacentCells.bottomRightCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam + 1, colParam + 1);
+      newBoard = openMultipleCells(newBoard, rowParam + 1, colParam + 1);
     } else {
-      newCells[rowParam + 1][colParam + 1].state = CellState.visible;
+      newBoard[rowParam + 1][colParam + 1].state = CellState.visible;
     }
   }
 
-  return newCells;
+  return newBoard;
 };

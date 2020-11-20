@@ -24,6 +24,19 @@ const GridButton: React.FC<ButtonProps> = ({
   state,
   value,
 }) => {
+  const buttonSize =
+    state === CellState.visible
+      ? {
+          ...styles.visible,
+          width: 350 / maxRow,
+          height: 350 / maxRow,
+        }
+      : {
+          ...styles.button,
+          width: 350 / maxRow,
+          height: 350 / maxRow,
+        };
+
   const renderContent = (): React.ReactNode => {
     const fontColor =
       value === 1
@@ -52,30 +65,15 @@ const GridButton: React.FC<ButtonProps> = ({
     } else if (state === CellState.flagged) {
       return <Text>🚩</Text>;
     }
-
     return null;
   };
+
   return (
     <TouchableOpacity
       disabled={hasLost}
       onLongPress={() => onFlag(row, col)}
       onPress={() => cellPress(row, col)}>
-      <View
-        style={
-          state === CellState.visible
-            ? {
-                ...styles.visible,
-                width: 350 / maxRow,
-                height: 350 / maxRow,
-              }
-            : {
-                ...styles.button,
-                width: 350 / maxRow,
-                height: 350 / maxRow,
-              }
-        }>
-        {renderContent()}
-      </View>
+      <View style={buttonSize}>{renderContent()}</View>
     </TouchableOpacity>
   );
 };

@@ -7,7 +7,7 @@ import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import StartGameScreen from './src/screens/StartGameScreen';
 import MainScreen from './src/screens/MainScreen';
 // Utils
-import {resetCells} from './src/utils/cells';
+import {resetBoard} from './src/utils/board';
 import {Colors} from './src/utils/styles';
 
 const Stack = createStackNavigator();
@@ -30,7 +30,7 @@ export default function App() {
               <HeaderBackButton
                 {...props}
                 onPress={() => {
-                  resetCells();
+                  resetBoard();
                   navigation.navigate('Home');
                 }}
               />
