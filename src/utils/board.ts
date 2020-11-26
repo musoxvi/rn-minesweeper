@@ -101,7 +101,6 @@ export const generateBoard = (
   board = addRandomBombs(bombs, maxRow, maxColumn, board);
 
   board.forEach((row, rowIndex) => {
-    let numberOfBombs = 0;
     row.forEach((col, colIndex) => {
       const currentCell = board[rowIndex][colIndex];
       const allAdjacentCells = grabAllAdjacentCells(
@@ -116,18 +115,12 @@ export const generateBoard = (
         return false;
       }
 
-      if (
-        allAdjacentCells.topLeftCell?.value === CellValue.bomb ||
-        allAdjacentCells.topCell?.value === CellValue.bomb ||
-        allAdjacentCells.topRightCell?.value === CellValue.bomb ||
-        allAdjacentCells.leftCell?.value === CellValue.bomb ||
-        allAdjacentCells.rightCell?.value === CellValue.bomb ||
-        allAdjacentCells.bottomLeftCell?.value === CellValue.bomb ||
-        allAdjacentCells.bottomCell?.value === CellValue.bomb ||
-        allAdjacentCells.bottomRightCell?.value === CellValue.bomb
-      ) {
-        numberOfBombs++;
-      }
+      const numberOfBombs: number = Object.values(allAdjacentCells).reduce(
+        (acc, cur) => {
+          return cur?.value && cur.value === CellValue.bomb ? acc + 1 : acc;
+        },
+        0,
+      );
 
       if (numberOfBombs > 0) {
         board[rowIndex][colIndex] = {
@@ -138,7 +131,6 @@ export const generateBoard = (
     });
   });
   configGame._board = board;
-
   return board;
 };
 
