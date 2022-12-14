@@ -2,9 +2,9 @@
 
 Minesweeper made using React Native and Typescript! 😎
 
-<img src="./src/img/minesweeper-home.png" alt="minesweeper" style="margin-left: 15px;" />
+<img src="./src/img/minesweeper-home.png" alt="minesweeper" style="margin-left: 15px;" /> | 
 <img src="./src/img/minesweeper-start.png" alt="minesweeper" style="margin-left: 15px;" />
-<img src="./src/img/minesweeper-lose.png" alt="minesweeper" style="margin-left: 15px;" />
+<img src="./src/img/minesweeper-lose.png" alt="minesweeper" style="margin-left: 15px;" /> | 
 <img src="./src/img/minesweeper-win.png" alt="minesweeper" style="margin-left: 15px;" />
 
 ## Installation
